@@ -1,0 +1,37 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin-arm64", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ScheduleStatus {
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model Schedule {
+  id        String         @id @default(uuid())
+  taskId    String
+  runAt     DateTime
+  lastRun   DateTime?
+  status    ScheduleStatus
+  retries   Int            @default(0)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([taskId])
+}
+
+model JobLog {
+  id         String   @id @default(uuid())
+  scheduleId String
+  executedAt DateTime
+  output     String
+  success    Boolean
+}

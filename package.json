@@ -22,8 +22,9 @@
     "test:e2e": "jest --config ./apps/task-mircro-service/test/jest-e2e.json",
     "build task-service:db": "npx prisma migrate dev --schema=./apps/task-service/src/infrastructure/prisma/schema.prisma",
     "sync task-service:db": "npx prisma generate --schema=./apps/task-service/src/infrastructure/prisma/schema.prisma",
+    "build schedule-service:db": "npx prisma migrate dev --schema=./apps/scheduler-service/src/infrastructure/prisma/schema.prisma",
+    "sync schedule-service:db": "npx prisma generate --schema=./apps/scheduler-service/src/infrastructure/prisma/schema.prisma",
     "start:all": "concurrently -n tasks,scheduler -c blue,green \"npm run run:task-service\" \"npm run run:scheduler-service\""
-
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
