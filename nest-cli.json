@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/task-mircro-service/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/task-mircro-service/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/task-mircro-service",
+  "projects": {
+    "scheduler-service": {
+      "type": "application",
+      "root": "apps/scheduler-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/scheduler-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/scheduler-service/tsconfig.app.json"
+      }
+    },
+    "shared-socket": {
+      "type": "library",
+      "root": "libs/shared-socket",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared-socket/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared-socket/tsconfig.lib.json"
+      }
+    },
+    "task-mircro-service": {
+      "type": "application",
+      "root": "apps/task-mircro-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/task-mircro-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/task-mircro-service/tsconfig.app.json"
+      }
+    },
+    "task-service": {
+      "type": "application",
+      "root": "apps/task-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/task-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/task-service/tsconfig.app.json"
+      }
+    }
+  }
+}
