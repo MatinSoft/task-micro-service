@@ -1,11 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { TaskStatus } from "@prisma/client"
 import { IsDate, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
-import { Entity } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { AttachmentEntity } from "./attachment.entity";
 
-@Entity()
+@Entity("Task")
 export class TaskEntity {
-
+    @PrimaryGeneratedColumn('uuid')
     @ApiProperty({
         type: String,
         required: true
@@ -13,6 +14,7 @@ export class TaskEntity {
     @IsUUID()
     id: string
 
+    @Column()
     @ApiProperty({
         type: String,
         required: true
@@ -21,7 +23,7 @@ export class TaskEntity {
     @IsNotEmpty()
     title: string
 
-
+    @Column({ nullable: true })
     @ApiProperty({
         type: String,
         required: false
@@ -30,6 +32,7 @@ export class TaskEntity {
     @IsString()
     description?: string
 
+    @Column({ type: 'enum', enum: TaskStatus })
     @ApiProperty({
         enum: TaskStatus,
         example: [TaskStatus.COMPLETED, TaskStatus.PENDING]
@@ -38,6 +41,7 @@ export class TaskEntity {
     @IsNotEmpty()
     status: TaskStatus
 
+    @CreateDateColumn()
     @ApiProperty({
         type: Date,
         required: true
@@ -45,10 +49,14 @@ export class TaskEntity {
     @IsDate()
     createdAt: Date
 
+    @UpdateDateColumn()
     @ApiProperty({
         type: Date,
         required: true
     })
     @IsDate()
     updatedAt: Date
+
+    @OneToMany(() => AttachmentEntity, (attachment) => attachment.task)
+    attachments: AttachmentEntity[];
 }

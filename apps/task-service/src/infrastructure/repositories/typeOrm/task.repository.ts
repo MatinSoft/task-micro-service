@@ -25,6 +25,4 @@ export class TypeOrmTaskRepository implements ITaskRepository {
         throw new Error("Method not implemented.");
     }
 
-
-
 }

@@ -4,7 +4,9 @@ import { UpdateTaskDto } from "apps/task-service/src/dto/update-task.dto";
 import { TaskEntity } from "apps/task-service/src/entity/task.entity";
 import { ITaskRepository } from "apps/task-service/src/interfaces/task‐repository.interface";
 import { PrismaService } from "../../prisma/prisma.service";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private readonly prisma: PrismaService) { }
   
