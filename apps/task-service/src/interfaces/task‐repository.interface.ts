@@ -7,5 +7,5 @@ export interface ITaskRepository {
     findAll(): Promise<TaskEntity[]>;
     findById(id: string): Promise<TaskEntity | null>;
     update(id: string, taskDto: UpdateTaskDto): Promise<TaskEntity>;
-    delete(id: string): Promise<void>;
+    delete(id: string): Promise<TaskEntity>;
 }
