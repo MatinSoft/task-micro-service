@@ -8,9 +8,12 @@ import { Repository } from "typeorm";
 @Injectable()
 export class TypeOrmTaskRepository implements ITaskRepository {
     constructor(private readonly repo: Repository<TaskEntity>) { }
-    
-    create(taskDto: CreateTaskDto): Promise<TaskEntity> {
-        throw new Error("Method not implemented.");
+
+    async create(taskDto: CreateTaskDto): Promise<TaskEntity> {
+        const task = await this.repo.create({
+            ...taskDto
+        })
+        return task
     }
     findAll(): Promise<TaskEntity[]> {
         throw new Error("Method not implemented.");

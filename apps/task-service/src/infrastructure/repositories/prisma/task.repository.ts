@@ -1,4 +1,3 @@
-import { Task } from "@prisma/client";
 import { CreateTaskDto } from "apps/task-service/src/dto/create-task.dto";
 import { UpdateTaskDto } from "apps/task-service/src/dto/update-task.dto";
 import { TaskEntity } from "apps/task-service/src/entity/task.entity";
