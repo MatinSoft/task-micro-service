@@ -1,12 +1,16 @@
-import { WebSocketGateway, WebSocketServer, OnGatewayInit } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { WebSocketGateway, WebSocketServer, OnGatewayInit, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { Server } from 'socket.io';
+import { TaskEvents } from './events';
 
-@WebSocketGateway({ namespace: '/events' }) 
+
+@WebSocketGateway() 
 export class SharedEventsGateway implements OnGatewayInit {
+
   @WebSocketServer()
   server: Server;
 
   afterInit(server: Server) {
+    console.log('WS Gateway initialized');
   }
 
   emitEvent(eventName: string, payload: any) {
@@ -15,5 +19,10 @@ export class SharedEventsGateway implements OnGatewayInit {
 
   toRoom(room: string, eventName: string, payload: any) {
     this.server.to(room).emit(eventName, payload);
+  }
+
+  @SubscribeMessage(TaskEvents.UPDATED)
+  handleUpdateTask(@MessageBody() message: any): void {
+    console.log('Received message:', message);
   }
 }

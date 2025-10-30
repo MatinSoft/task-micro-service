@@ -14,11 +14,14 @@ import { resolve } from 'path';
       envFilePath: resolve(process.cwd(), "libs", "shared-socket", '.env')
     }),],
   providers: [
+    SharedEventsGateway,
     WsCommunication,
     CommunicationProvider,
-    SharedEventsGateway,
     KafkaCommunication
   ],
-  exports: [CommunicationProvider],
+  exports: [SharedEventsGateway,
+    WsCommunication,
+    CommunicationProvider,
+    KafkaCommunication],
 })
 export class SharedSocketModule { }

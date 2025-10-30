@@ -46,7 +46,7 @@ export class TaskServiceService {
       throw new NotFoundException("Task not found")
     }
     const updatedTask =  await this.taskRepository.update(id, updateTask)
-    this.comm.publish(TaskEvents.CREATED, { id: updatedTask.id, title: updatedTask.title })
+    this.comm.publish(TaskEvents.UPDATED, { id: updatedTask.id, title: updatedTask.title })
     return updatedTask
   }
 
