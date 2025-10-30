@@ -5,19 +5,26 @@ import { TaskEntity } from './entity/task.entity';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { FileSystemService } from './utils/file-system/file-system.service';
 import path from 'path';
+import { TaskEvents } from 'lib/shared-socket/events';
+import * as communicationInterface from 'lib/shared-socket/communication/communication.interface';
 
 @Injectable()
 export class TaskServiceService {
   constructor(@Inject('ITaskRepository')
   private readonly taskRepository: taskRepositoryInterface.ITaskRepository,
-    private readonly fileSystemService: FileSystemService
+    private readonly fileSystemService: FileSystemService,
+    @Inject('CommunicationStrategy')
+    private readonly comm: communicationInterface.CommunicationStrategy,
   ) { }
 
   async create(taskDto: CreateTaskDto): Promise<TaskEntity> {
-    return await this.taskRepository.create(taskDto)
+    const newTask = await this.taskRepository.create(taskDto)
+    this.comm.publish(TaskEvents.CREATED, { id: newTask.id, title: newTask.title })
+    return newTask
   }
 
   async createV2(): Promise<string> {
+    this.comm.publish(TaskEvents.CREATED, { id: "v2Id", title: "V2 Ttile" })
     return "Task version 2 Created"
   }
 
@@ -34,11 +41,13 @@ export class TaskServiceService {
   }
 
   async updateTask(id: string, updateTask: UpdateTaskDto): Promise<TaskEntity> {
-    const foundedTicket = await this.taskRepository.findById(id)
-    if (!foundedTicket) {
+    const foundTask = await this.taskRepository.findById(id)
+    if (!foundTask) {
       throw new NotFoundException("Task not found")
     }
-    return await this.taskRepository.update(id, updateTask)
+    const updatedTask =  await this.taskRepository.update(id, updateTask)
+    this.comm.publish(TaskEvents.CREATED, { id: updatedTask.id, title: updatedTask.title })
+    return updatedTask
   }
 
   async deleteTask(id: string): Promise<TaskEntity> {
@@ -52,12 +61,14 @@ export class TaskServiceService {
 
         // Delete the file if it exists
         if (this.fileSystemService.isExists(filePath)) {
-           this.fileSystemService.delete(filePath);
+          this.fileSystemService.delete(filePath);
         }
       }
 
     }
-    return await this.taskRepository.delete(id)
+    const deletedTask =  await this.taskRepository.delete(id)
+    this.comm.publish(TaskEvents.CREATED, { id: deletedTask.id, title: deletedTask.title })
+    return deletedTask
   }
 
   async uploadFiles(id: string, files: Array<Express.Multer.File>): Promise<void> {

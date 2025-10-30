@@ -1,8 +1,24 @@
 import { Module } from '@nestjs/common';
-import { SharedSocketService } from './shared-socket.service';
+import { SharedEventsGateway } from './base.gateway';
+import { ConfigModule } from '@nestjs/config';
+import { WsCommunication } from './communication/ws.communication';
+import { KafkaCommunication } from './communication/kafka.communication';
+import { CommunicationProvider } from './communication/communication.provider';
+import { resolve } from 'path';
 
 @Module({
-  providers: [SharedSocketService],
-  exports: [SharedSocketService],
+
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: resolve(process.cwd(), "libs", "shared-socket", '.env')
+    }),],
+  providers: [
+    WsCommunication,
+    CommunicationProvider,
+    SharedEventsGateway,
+    KafkaCommunication
+  ],
+  exports: [CommunicationProvider],
 })
-export class SharedSocketModule {}
+export class SharedSocketModule { }
