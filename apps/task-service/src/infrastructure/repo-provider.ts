@@ -7,6 +7,7 @@ import { PrismaTaskRepository } from './repositories/prisma/task.repository';
 import { TaskEntity } from '../entity/task.entity';
 import { TypeOrmTaskRepository } from './repositories/typeOrm/task.repository';
 import { PrismaService } from './prisma/prisma.service';
+import { AttachmentEntity } from '../entity/attachment.entity';
 
 
 
@@ -15,13 +16,14 @@ export const TaskRepositoryProvider: Provider = {
   useFactory: (
     config: ConfigService,
     repo: Repository<TaskEntity>,
+    atachRepo: Repository<AttachmentEntity>,
     prismaService: PrismaService
   ) => {
     const orm = config.get<string>('ORM');
     if (orm === 'prisma') {
       return new PrismaTaskRepository(prismaService);
     }
-    return new TypeOrmTaskRepository(repo);
+    return new TypeOrmTaskRepository(repo, atachRepo);
   },
-  inject: [ConfigService, getRepositoryToken(TaskEntity) , PrismaService],
+  inject: [ConfigService, getRepositoryToken(TaskEntity), getRepositoryToken(AttachmentEntity), PrismaService],
 };

@@ -6,10 +6,31 @@ import { TaskEntity } from 'apps/task-service/src/entity/task.entity';
 import { AttachmentEntity } from 'apps/task-service/src/entity/attachment.entity';
 import { Repository } from 'typeorm';
 import { ITaskRepository } from 'apps/task-service/src/interfaces/task‐repository.interface';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import * as path from 'path';
 @Injectable()
 export class TypeOrmTaskRepository implements ITaskRepository {
-  constructor(private readonly repo: Repository<TaskEntity>) {}
+  constructor(
+    private readonly repo: Repository<TaskEntity>,
+    @InjectRepository(AttachmentEntity)
+    private readonly attachmentRepo: Repository<AttachmentEntity>
+    ) {}
+ 
+  async uploadFiles(id: string, files: Express.Multer.File[]): Promise<void> {
+  
+    const attachments = files.map((file) => {
+      const attachment = new AttachmentEntity();
+      attachment.taskId = id; 
+      attachment.filename = path.basename(file.path)
+      attachment.size = file.size;
+      attachment.mimetype = file.mimetype;
+      attachment.createdAt = new Date(); 
+      return attachment;
+    });
+
+    await this.attachmentRepo.save(attachments);
+
+  }
 
   async create(taskDto: CreateTaskDto): Promise<TaskEntity> {
     const task = this.repo.create({

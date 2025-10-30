@@ -6,10 +6,28 @@ import { PrismaService } from "../../prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { TaskStatus } from "@prisma/client";
 import { AttachmentEntity } from "apps/task-service/src/entity/attachment.entity";
+import path from "path";
 
 @Injectable()
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private readonly prisma: PrismaService) { }
+  
+  async uploadFiles(id: string, files: Express.Multer.File[]): Promise<void> {
+    
+    const attachments = files.map((file) => {
+      return {
+        taskId: id,         
+        filename: path.basename(file.path), 
+        size: file.size,           
+        mimetype: file.mimetype,   
+        createdAt: new Date(),
+      };
+    });
+
+    await this.prisma.attachment.createMany({
+      data: attachments,   
+    });
+  }
 
   async create(taskDto: CreateTaskDto): Promise<TaskEntity> {
     const task = await this.prisma.task.create({

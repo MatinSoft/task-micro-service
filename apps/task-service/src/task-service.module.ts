@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TaskRepositoryProvider } from './infrastructure/repo-provider';
 import { resolve } from 'path';
 import { VersioningConfigService } from './utils/config/versioning-config.service';
+import { FileSystemService } from './utils/file-system/file-system.service';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { VersioningConfigService } from './utils/config/versioning-config.servic
     PrismaModule
   ],
   controllers: [TaskServiceController],
-  providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService],
+  providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService , FileSystemService],
 })
 export class TaskServiceModule { }

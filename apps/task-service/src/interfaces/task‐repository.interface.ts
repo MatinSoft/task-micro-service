@@ -8,4 +8,5 @@ export interface ITaskRepository {
     findById(id: string): Promise<TaskEntity | null>;
     update(id: string, taskDto: UpdateTaskDto): Promise<TaskEntity>;
     delete(id: string): Promise<TaskEntity>;
+    uploadFiles(id: string, files: Array<Express.Multer.File>): Promise<void>
 }
