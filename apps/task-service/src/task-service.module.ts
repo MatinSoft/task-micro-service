@@ -6,17 +6,18 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { TaskRepositoryProvider } from './infrastructure/repo-provider';
 import { resolve } from 'path';
+import { VersioningConfigService } from './utils/config/versioning-config.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: resolve(process.cwd(),"apps","task-service",'.env')
+      envFilePath: resolve(process.cwd(), "apps", "task-service", '.env')
     }),
     MyTypeOrmModule,
     PrismaModule
   ],
   controllers: [TaskServiceController],
-  providers: [TaskServiceService, TaskRepositoryProvider],
+  providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService],
 })
 export class TaskServiceModule { }

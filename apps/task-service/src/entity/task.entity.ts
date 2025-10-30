@@ -35,7 +35,7 @@ export class TaskEntity {
     @Column({ type: 'enum', enum: TaskStatus })
     @ApiProperty({
         enum: TaskStatus,
-        example: [TaskStatus.COMPLETED, TaskStatus.PENDING]
+        example: [TaskStatus.COMPLETED, TaskStatus.PENDING , TaskStatus.CANCELLED , TaskStatus.IN_PROGRESS ]
     })
     @IsEnum(TaskStatus)
     @IsNotEmpty()
