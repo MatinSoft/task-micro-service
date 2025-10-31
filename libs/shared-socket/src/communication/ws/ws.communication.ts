@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CommunicationStrategy } from './communication.interface';
-import { WssGateway } from '../ws.gateway';
+import { CommunicationStrategy } from '../communication.interface';
+import { WssGateway } from './ws.gateway';
 
 @Injectable()
 export class WsCommunication implements CommunicationStrategy {

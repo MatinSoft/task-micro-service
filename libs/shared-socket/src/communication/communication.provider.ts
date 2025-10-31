@@ -1,8 +1,8 @@
 import { Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { WsCommunication } from './ws.communication';
+import { WsCommunication } from './ws/ws.communication';
 import { KafkaCommunication } from './kafka.communication';
-import { WssGateway } from '../ws.gateway';
+import { WssGateway } from './ws/ws.gateway';
 
 export const CommunicationProvider: Provider = {
   provide: 'CommunicationStrategy',

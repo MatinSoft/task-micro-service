@@ -1,6 +1,6 @@
 import { WebSocketGateway, WebSocketServer, OnGatewayInit, SubscribeMessage, MessageBody } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { TaskEvents } from './events';
+import { TaskEvents } from '../../events';
 
 
 @WebSocketGateway() 
