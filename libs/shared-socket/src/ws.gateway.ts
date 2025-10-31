@@ -4,7 +4,7 @@ import { TaskEvents } from './events';
 
 
 @WebSocketGateway() 
-export class SharedEventsGateway implements OnGatewayInit {
+export class WssGateway implements OnGatewayInit {
 
   @WebSocketServer()
   server: Server;

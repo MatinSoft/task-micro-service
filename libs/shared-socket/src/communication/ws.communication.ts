@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CommunicationStrategy } from './communication.interface';
-import { SharedEventsGateway } from '../base.gateway';
+import { WssGateway } from '../ws.gateway';
 
 @Injectable()
 export class WsCommunication implements CommunicationStrategy {
-    constructor(private readonly gateway: SharedEventsGateway) { }
+    constructor(private readonly gateway: WssGateway) { }
 
     async publish(eventName: string, payload: any): Promise<void> {
         this.gateway.emitEvent(eventName, payload);
