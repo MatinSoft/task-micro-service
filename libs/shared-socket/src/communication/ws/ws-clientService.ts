@@ -9,8 +9,11 @@ export class WsClientService implements CommunicationStrategy, OnModuleInit, OnM
   private socket: Socket;
   private handlers = new Map<string, (payload: any) => Promise<void> | void>();
   private isConnected = false;
+  private readonly serverUrl: string
 
-  constructor(private readonly serverUrl: string = 'http://localhost:3001') {}
+  constructor() {
+    this.serverUrl = 'http://localhost:4000'
+  }
 
   async onModuleInit() {
     await this.connect();
@@ -46,6 +49,7 @@ export class WsClientService implements CommunicationStrategy, OnModuleInit, OnM
             handler(payload);
          }
         }
+        console.log(eventName , payload)
       });
 
       // Timeout after 5 seconds
