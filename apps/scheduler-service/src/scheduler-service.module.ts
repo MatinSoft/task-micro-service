@@ -6,7 +6,7 @@ import { SchedulerWsListener } from './scheduler-ws-listener.controller';
 import { SharedSocketModule } from 'lib/shared-socket/shared-socket.module';
 
 @Module({
-  imports: [SharedSocketModule],
+  imports: [],
   controllers: [SchedulerServiceController ],
   providers: [SchedulerServiceService , SchedulerWsListener , SchedulerKafkaListener],
 })

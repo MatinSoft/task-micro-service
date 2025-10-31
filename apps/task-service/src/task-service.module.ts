@@ -8,7 +8,8 @@ import { TaskRepositoryProvider } from './infrastructure/repo-provider';
 import { resolve } from 'path';
 import { VersioningConfigService } from './utils/config/versioning-config.service';
 import { FileSystemService } from './utils/file-system/file-system.service';
-import { SharedSocketModule } from 'lib/shared-socket/shared-socket.module';
+import { SharedSocketModule } from 'lib/shared-socket';
+
 
 @Module({
   imports: [
@@ -21,6 +22,6 @@ import { SharedSocketModule } from 'lib/shared-socket/shared-socket.module';
     SharedSocketModule
   ],
   controllers: [TaskServiceController],
-  providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService , FileSystemService],
+  providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService, FileSystemService],
 })
 export class TaskServiceModule { }
