@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { EventPattern, Payload } from "@nestjs/microservices";
+import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
 import { TaskEvents } from "lib/shared-socket/events";
 
 @Injectable()
@@ -9,9 +9,9 @@ export class SchedulerKafkaListener {
 
     }
 
-    @EventPattern(TaskEvents.UPDATED)
+    @MessagePattern(TaskEvents.UPDATED)
     async handleTaskEdited(@Payload() data: any) {
-
+        console.log("kafka", data)
     }
 
     @EventPattern(TaskEvents.DELETED)

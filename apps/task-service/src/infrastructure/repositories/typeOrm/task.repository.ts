@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from 'apps/task-service/src/dto/create-task.dto';
 import { UpdateTaskDto } from 'apps/task-service/src/dto/update-task.dto';
-import { TaskEntity } from 'apps/task-service/src/entity/task.entity';
+import { TaskEntity, TaskStatus } from 'apps/task-service/src/entity/task.entity';
 import { AttachmentEntity } from 'apps/task-service/src/entity/attachment.entity';
 import { Repository } from 'typeorm';
 import { ITaskRepository } from 'apps/task-service/src/interfaces/task‐repository.interface';
@@ -36,7 +36,7 @@ export class TypeOrmTaskRepository implements ITaskRepository {
     const task = this.repo.create({
       title: taskDto.title,
       description: taskDto.description,
-      status: 'PENDING',
+      status: TaskStatus.PENDING,
     });
 
     const saved = await this.repo.save(task);

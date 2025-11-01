@@ -1,12 +1,12 @@
 import { CreateTaskDto } from "apps/task-service/src/dto/create-task.dto";
 import { UpdateTaskDto } from "apps/task-service/src/dto/update-task.dto";
-import { TaskEntity } from "apps/task-service/src/entity/task.entity";
+import { TaskEntity, TaskStatus } from "apps/task-service/src/entity/task.entity";
 import { ITaskRepository } from "apps/task-service/src/interfaces/task‐repository.interface";
 import { PrismaService } from "../../prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { AttachmentEntity } from "apps/task-service/src/entity/attachment.entity";
 import path from "path";
-import { TaskStatus } from "@prisma/client";
+
 
 @Injectable()
 export class PrismaTaskRepository implements ITaskRepository {
@@ -35,7 +35,7 @@ export class PrismaTaskRepository implements ITaskRepository {
         data: {
           title: taskDto.title,
           description: taskDto.description,
-          status: "PENDING"
+          status: TaskStatus.PENDING
         },
         include: {
           attachments: true

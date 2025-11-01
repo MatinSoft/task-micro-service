@@ -16,7 +16,7 @@ export class KafkaCommunication implements CommunicationStrategy, OnModuleInit, 
             return;
         }
 
-        this.kafka = new Kafka({ brokers: this.config.get<string[]>('KAFKA_BROKERS') || ["localhost:9092"] });
+        this.kafka = new Kafka({ brokers: [this.config.get<string[]>('KAFKA_BROKERS')?.toString()  || "localhost:9092"] });
         this.producer = this.kafka.producer();
         this.consumer = this.kafka.consumer({ groupId: this.config.get<string>('KAFKA_GROUP_ID') || "app-group" });
     }

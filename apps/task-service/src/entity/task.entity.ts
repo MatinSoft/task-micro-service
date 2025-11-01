@@ -1,9 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { TaskStatus } from "@prisma/client"
 import { IsDate, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { AttachmentEntity } from "./attachment.entity";
 
+export enum TaskStatus {
+  PENDING="PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED"
+}
 @Entity("Task")
 export class TaskEntity {
     @PrimaryGeneratedColumn('uuid')

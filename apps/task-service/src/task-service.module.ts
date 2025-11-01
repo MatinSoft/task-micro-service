@@ -19,7 +19,7 @@ import { SharedSocketModule } from 'lib/shared-socket';
     }),
     MyTypeOrmModule,
     PrismaModule,
-    SharedSocketModule
+    SharedSocketModule.forRoot({ mode: 'server' }),
   ],
   controllers: [TaskServiceController],
   providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService, FileSystemService],
