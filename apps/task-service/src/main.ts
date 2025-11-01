@@ -3,7 +3,6 @@ import { TaskServiceModule } from './task-service.module';
 import { swaggerInitialize } from './setups/swaggerSetup';
 import { setupGlobalPipes } from './setups/setupGlobalPieps';
 import { apiVersioning } from './setups/versioning';
-import { VersioningType } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(TaskServiceModule);
