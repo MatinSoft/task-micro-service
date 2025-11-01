@@ -1,5 +1,5 @@
 import { OnModuleInit } from "@nestjs/common";
-import { MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
+import { MessageBody, WebSocketGateway } from "@nestjs/websockets";
 import { WsClientService } from "lib/shared-socket/communication/ws/ws-clientService";
 import { TaskEvents } from "lib/shared-socket/events";
 
@@ -10,21 +10,18 @@ export class SchedulerWsListener implements OnModuleInit {
 
   onModuleInit() {
     this.wsClientService.subscribe(TaskEvents.UPDATED, this.handleUpdateTask)
+    this.wsClientService.subscribe(TaskEvents.CREATED, this.handleCreateTask)
+    this.wsClientService.subscribe(TaskEvents.DELETED, this.handleDeleteTask)
   }
 
-
-
-  @SubscribeMessage(TaskEvents.CREATED)
   handleCreateTask(@MessageBody() message: any): void {
     console.log('Received message:', message);
   }
 
-  @SubscribeMessage(TaskEvents.UPDATED)
   handleUpdateTask(@MessageBody() message: any): void {
     console.log('Received message:', message);
   }
 
-  @SubscribeMessage(TaskEvents.DELETED)
   handleDeleteTask(@MessageBody() message: any): void {
     console.log('Received message:', message);
   }

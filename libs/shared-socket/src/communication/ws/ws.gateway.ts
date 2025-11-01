@@ -1,6 +1,6 @@
-import { WebSocketGateway, WebSocketServer, OnGatewayInit, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { WebSocketGateway, WebSocketServer, OnGatewayInit } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { TaskEvents } from '../../events';
+
 
 
 @WebSocketGateway() 
@@ -21,8 +21,4 @@ export class WssGateway implements OnGatewayInit {
     this.server.to(room).emit(eventName, payload);
   }
 
-  @SubscribeMessage(TaskEvents.UPDATED)
-  handleUpdateTask(@MessageBody() message: any): void {
-    console.log('Received message:', message);
-  }
 }

@@ -16,7 +16,9 @@ export class WsClientService implements CommunicationStrategy, OnModuleInit, OnM
   }
 
   async onModuleInit() {
-    await this.connect();
+    setTimeout(async () => {
+      await this.connect();
+    }, 10000)
   }
 
   private async connect(): Promise<void> {
@@ -45,11 +47,11 @@ export class WsClientService implements CommunicationStrategy, OnModuleInit, OnM
       this.socket.onAny((eventName: string, payload: any) => {
         if (this.handlers.has(eventName)) {
           const handler = this.handlers.get(eventName);
-         if(handler) {
+          if (handler) {
             handler(payload);
-         }
+          }
         }
-        console.log(eventName , payload)
+        console.log(eventName, payload)
       });
 
       // Timeout after 5 seconds

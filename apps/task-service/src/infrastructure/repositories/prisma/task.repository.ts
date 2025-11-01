@@ -4,43 +4,49 @@ import { TaskEntity } from "apps/task-service/src/entity/task.entity";
 import { ITaskRepository } from "apps/task-service/src/interfaces/task‐repository.interface";
 import { PrismaService } from "../../prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
-import { TaskStatus } from "@prisma/client";
 import { AttachmentEntity } from "apps/task-service/src/entity/attachment.entity";
 import path from "path";
+import { TaskStatus } from "@prisma/client";
 
 @Injectable()
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private readonly prisma: PrismaService) { }
-  
+
   async uploadFiles(id: string, files: Express.Multer.File[]): Promise<void> {
-    
+
     const attachments = files.map((file) => {
       return {
-        taskId: id,         
-        filename: path.basename(file.path), 
-        size: file.size,           
-        mimetype: file.mimetype,   
+        taskId: id,
+        filename: path.basename(file.path),
+        size: file.size,
+        mimetype: file.mimetype,
         createdAt: new Date(),
       };
     });
 
     await this.prisma.attachment.createMany({
-      data: attachments,   
+      data: attachments,
     });
   }
 
   async create(taskDto: CreateTaskDto): Promise<TaskEntity> {
-    const task = await this.prisma.task.create({
-      data: {
-        title: taskDto.title,
-        description: taskDto.description,
-        status: TaskStatus.PENDING
-      },
-      include: {
-        attachments: true
-      }
-    });
-    return this.toEntity(task);
+    try {
+      const task = await this.prisma.task.create({
+        data: {
+          title: taskDto.title,
+          description: taskDto.description,
+          status: "PENDING"
+        },
+        include: {
+          attachments: true
+        }
+      });
+      return this.toEntity(task);
+    } catch (error) {
+      console.log(error)
+      throw new Error(error);
+  
+    }
   }
 
   async findAll(): Promise<TaskEntity[]> {
