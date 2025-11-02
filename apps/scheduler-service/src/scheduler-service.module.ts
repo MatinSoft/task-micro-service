@@ -7,6 +7,9 @@ import { SharedSocketModule } from 'lib/shared-socket/shared-socket.module';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';
 import { VersioningConfigService } from './utils/config/versioning-config.service';
+import { SchedulerRepositoryProvider } from './infrastructure/repo-provider';
+import { MyTypeOrmModule } from './infrastructure/typeorm/typeorm.module';
+import { PrismaModule } from './infrastructure/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -14,8 +17,10 @@ import { VersioningConfigService } from './utils/config/versioning-config.servic
       isGlobal: true,
       envFilePath: resolve(process.cwd(), "apps", "scheduler-service", '.env')
     }),
+    MyTypeOrmModule,
+    PrismaModule,
     SharedSocketModule.forRoot({ mode: "client", serverUrl: "http://localhost:4000" })],
   controllers: [SchedulerServiceController],
-  providers: [SchedulerServiceService, SchedulerWsListener, SchedulerKafkaListener, VersioningConfigService]
+  providers: [SchedulerServiceService, SchedulerWsListener, SchedulerRepositoryProvider,SchedulerKafkaListener, VersioningConfigService]
 })
 export class SchedulerServiceModule { }

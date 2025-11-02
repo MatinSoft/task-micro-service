@@ -2,10 +2,10 @@ import { CreateTaskDto } from "apps/task-service/src/dto/create-task.dto";
 import { UpdateTaskDto } from "apps/task-service/src/dto/update-task.dto";
 import { TaskEntity, TaskStatus } from "apps/task-service/src/entity/task.entity";
 import { ITaskRepository } from "apps/task-service/src/interfaces/task‐repository.interface";
-import { PrismaService } from "../../prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { AttachmentEntity } from "apps/task-service/src/entity/attachment.entity";
 import path from "path";
+import { PrismaService } from "../../prisma/prisma.service";
 
 
 @Injectable()
