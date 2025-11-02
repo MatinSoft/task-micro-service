@@ -18,8 +18,8 @@ export class SchedulerWsListener implements OnModuleInit {
     this.wsClientService.subscribe(TaskEvents.DELETED, this.handleDeleteTask)
   }
 
-  handleCreateTask(@MessageBody() message: communicationInterface.ITaskMessage): void {
-    console.log('Received message:', message);
+  async handleCreateTask(@MessageBody() message: communicationInterface.ITaskMessage): Promise<void> {
+    await this.schedulerServiceService.create({ taskId: message.id })
   }
 
   handleUpdateTask(@MessageBody() message: communicationInterface.ITaskMessage): void {
