@@ -64,6 +64,7 @@ export class TypeOrmTaskRepository implements ITaskRepository {
     await this.repo.update(id, {
       title: taskDto.title,
       description: taskDto.description,
+      status : taskDto.status
     });
 
     const updated = await this.repo.findOne({

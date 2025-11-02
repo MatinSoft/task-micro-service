@@ -3,6 +3,7 @@ import { UpdateScheduleDto } from 'apps/scheduler-service/src/dto/update.schedul
 import { ScheduleEntity, ScheduleStatus } from 'apps/scheduler-service/src/entity/schedule.entity';
 import { IScheduleRepo } from 'apps/scheduler-service/src/interfaces/schedule.interface';
 import { PrismaService } from "../../prisma/prisma.service";
+import { TaskStatus } from 'apps/task-service/src/entity/task.entity';
 
 export class SchedulePrismaRepo implements IScheduleRepo {
   constructor(private readonly prisma: PrismaService) { }
@@ -19,7 +20,7 @@ export class SchedulePrismaRepo implements IScheduleRepo {
     s.id = prismaSchedule.id;
     s.taskId = prismaSchedule.taskId;
     s.runAt = prismaSchedule.runAt;
-    s.status = prismaSchedule.status as any; // cast to ScheduleStatus
+    s.status = prismaSchedule.status;
     s.retries = prismaSchedule.retries;
     s.createdAt = prismaSchedule.createdAt;
     s.updatedAt = prismaSchedule.updatedAt;
@@ -39,8 +40,14 @@ export class SchedulePrismaRepo implements IScheduleRepo {
   }
 
   async findAll(): Promise<ScheduleEntity[]> {
-    const prismaSchedules = await this.prisma.schedule.findMany();
-    return prismaSchedules.map(s => this.toEntity(s));
+    try {
+      const prismaSchedules = await this.prisma.schedule.findMany();
+      return prismaSchedules.map(s => this.toEntity(s));
+    } catch (error) {
+      console.log(error)
+      throw new Error("");
+      
+    }
   }
 
   async findById(id: string): Promise<ScheduleEntity | null> {
@@ -54,9 +61,7 @@ export class SchedulePrismaRepo implements IScheduleRepo {
   async update(id: string, taskDto: UpdateScheduleDto): Promise<ScheduleEntity> {
     const prismaSchedule = await this.prisma.schedule.update({
       where: { id },
-      data: {
-        ...taskDto,
-      },
+      data: { status: { set: taskDto.status } }
     });
     return this.toEntity(prismaSchedule);
   }

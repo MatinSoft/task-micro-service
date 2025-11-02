@@ -32,7 +32,10 @@ export class KafkaCommunication implements CommunicationStrategy, OnModuleInit, 
     }
 
     async assignHandlers() {
-              // Subscribe to all topics registered
+        if (!this.enabled) {
+            return;
+        }
+        // Subscribe to all topics registered
         for (const { topic } of this.subscriptions) {
             await this.consumer.subscribe({ topic, fromBeginning: true });
         }
