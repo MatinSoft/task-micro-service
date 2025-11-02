@@ -12,7 +12,7 @@ import { PrismaService } from './prisma/prisma.service';
 
 
 export const SchedulerRepositoryProvider: Provider = {
-  provide: 'ITaskRepository',
+  provide: 'IScheduleRepository',
   useFactory: (
     config: ConfigService,
     repo: Repository<ScheduleEntity>,

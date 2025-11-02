@@ -2,11 +2,15 @@ import { OnModuleInit } from "@nestjs/common";
 import { MessageBody, WebSocketGateway } from "@nestjs/websockets";
 import { WsClientService } from "lib/shared-socket/communication/ws/ws-clientService";
 import { TaskEvents } from "lib/shared-socket/events";
+import { SchedulerServiceService } from "./scheduler-service.service";
+import * as communicationInterface from "lib/shared-socket/communication/communication.interface";
 
 @WebSocketGateway()
 export class SchedulerWsListener implements OnModuleInit {
 
-  constructor(private readonly wsClientService: WsClientService) { }
+  constructor(private readonly wsClientService: WsClientService,
+    private readonly schedulerServiceService: SchedulerServiceService
+  ) { }
 
   onModuleInit() {
     this.wsClientService.subscribe(TaskEvents.UPDATED, this.handleUpdateTask)
@@ -14,15 +18,15 @@ export class SchedulerWsListener implements OnModuleInit {
     this.wsClientService.subscribe(TaskEvents.DELETED, this.handleDeleteTask)
   }
 
-  handleCreateTask(@MessageBody() message: any): void {
+  handleCreateTask(@MessageBody() message: communicationInterface.ITaskMessage): void {
     console.log('Received message:', message);
   }
 
-  handleUpdateTask(@MessageBody() message: any): void {
+  handleUpdateTask(@MessageBody() message: communicationInterface.ITaskMessage): void {
     console.log('Received message:', message);
   }
 
-  handleDeleteTask(@MessageBody() message: any): void {
+  handleDeleteTask(@MessageBody() message: communicationInterface.ITaskMessage): void {
     console.log('Received message:', message);
   }
 

@@ -1,11 +1,11 @@
-import { CreateScheduleEntity } from 'apps/scheduler-service/src/dto/create.schedule.entity';
+import { CreateScheduleDto } from 'apps/scheduler-service/src/dto/create.schedule.entity';
 import { UpdateScheduleDto } from 'apps/scheduler-service/src/dto/update.schedule.entity';
-import { ScheduleEntity } from 'apps/scheduler-service/src/entity/schedule.entity';
+import { ScheduleEntity, ScheduleStatus } from 'apps/scheduler-service/src/entity/schedule.entity';
 import { IScheduleRepo } from 'apps/scheduler-service/src/interfaces/schedule.interface';
 import { PrismaService } from "../../prisma/prisma.service";
 
 export class SchedulePrismaRepo implements IScheduleRepo {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   private toEntity(prismaSchedule: any): ScheduleEntity {
     const s = new ScheduleEntity();
@@ -19,12 +19,12 @@ export class SchedulePrismaRepo implements IScheduleRepo {
     return s;
   }
 
-  async create(taskDto: CreateScheduleEntity): Promise<ScheduleEntity> {
+  async create(scheduleDto: CreateScheduleDto): Promise<ScheduleEntity> {
     const prismaSchedule = await this.prisma.schedule.create({
       data: {
-        taskId: taskDto.taskId,
+        taskId: scheduleDto.taskId,
         runAt: new Date(),
-        status: taskDto.status,
+        status: ScheduleStatus.SCHEDULED,
         retries: 0,
       },
     });
