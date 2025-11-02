@@ -11,9 +11,12 @@ import { UpdateScheduleDto } from "apps/scheduler-service/src/dto/update.schedul
 export class ScheduleRepository implements IScheduleRepo {
 
   constructor(private readonly repository: Repository<ScheduleEntity>) { }
+  async deleteByTaskId(taskId: string): Promise<void> {
+   await this.repository.delete({ taskId });
+  }
 
   async create(taskDto: CreateScheduleDto): Promise<ScheduleEntity> {
-    const entity = this.repository.create({ ...taskDto, status: ScheduleStatus.SCHEDULED });
+    const entity = this.repository.create({ ...taskDto, status: ScheduleStatus.SCHEDULED, runAt: new Date() });
     return this.repository.save(entity);
   }
 
@@ -26,7 +29,7 @@ export class ScheduleRepository implements IScheduleRepo {
   }
 
   async update(id: string, schedule: UpdateScheduleDto): Promise<ScheduleEntity> {
-    await this.repository.update(id,schedule);
+    await this.repository.update(id, schedule);
     return this.repository.findOneOrFail({ where: { id } });
   }
 

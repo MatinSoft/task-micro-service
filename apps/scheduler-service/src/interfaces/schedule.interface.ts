@@ -8,4 +8,5 @@ export interface IScheduleRepo {
     findById(id: string): Promise<ScheduleEntity | null>;
     update(id: string, taskDto: UpdateScheduleDto): Promise<ScheduleEntity>;
     delete(id: string): Promise<ScheduleEntity>
+    deleteByTaskId(taskId: string): Promise<void>
 }

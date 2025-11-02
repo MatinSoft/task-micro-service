@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { SchedulerServiceController } from './scheduler-service.controller';
 import { SchedulerServiceService } from './scheduler-service.service';
 import { SchedulerKafkaListener } from './scheduler-listener.controller';
-import { SchedulerWsListener } from './scheduler-ws-listener.controller';
+import { SchedulerWsListener } from './scheduler-ws-listener';
 import { SharedSocketModule } from 'lib/shared-socket/shared-socket.module';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';

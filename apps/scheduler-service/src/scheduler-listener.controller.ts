@@ -25,19 +25,14 @@ export class SchedulerKafkaListener {
   }
 
   async handleTaskCreated(@Payload() data: communicationInterface.ITaskMessage) {
-    try {
-      const res = await this.schedulerServiceService.create({ taskId: data.id })
-      console.log(res, data)
-    } catch (error) {
-      console.log(error)
-    }
+    const res = await this.schedulerServiceService.create({ taskId: data.id })
   }
 
   async handleTaskEdited(@Payload() data: communicationInterface.ITaskMessage) {
   }
 
   async handleTaskDeleted(@Payload() data: communicationInterface.ITaskMessage) {
-
+    await this.schedulerServiceService.deleteByTaskId(data.id)
   }
 
 }

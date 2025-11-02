@@ -12,7 +12,7 @@ import {
 
 export enum ScheduleStatus {
     SCHEDULED = "SCHEDULED",
-    RUNNING = "RUNNING",
+    IN_PROGRESS = "IN_PROGRESS",
     COMPLETED = "COMPLETED",
     FAILED = "FAILED",
 }
@@ -54,6 +54,7 @@ export class ScheduleEntity {
     @Column({
         type: "enum",
         enum: ScheduleStatus,
+        name:"ScheduleStatus",
         default: ScheduleStatus.SCHEDULED,
     })
     status: ScheduleStatus;

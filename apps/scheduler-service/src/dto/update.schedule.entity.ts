@@ -7,7 +7,8 @@ export class UpdateScheduleDto {
 
     @ApiProperty({
         enum: ScheduleStatus,
-        required: true
+        required: true,
+        example: [ScheduleStatus.COMPLETED, ScheduleStatus.FAILED, ScheduleStatus.IN_PROGRESS, ScheduleStatus.SCHEDULED]
     })
     @IsEnum(ScheduleStatus)
     @Column({

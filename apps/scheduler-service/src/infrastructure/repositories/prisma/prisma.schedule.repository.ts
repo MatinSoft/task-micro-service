@@ -6,6 +6,13 @@ import { PrismaService } from "../../prisma/prisma.service";
 
 export class SchedulePrismaRepo implements IScheduleRepo {
   constructor(private readonly prisma: PrismaService) { }
+  async deleteByTaskId(taskId: string): Promise<void> {
+    await this.prisma.schedule.deleteMany({
+      where: {
+        taskId: taskId
+      }
+    })
+  }
 
   private toEntity(prismaSchedule: any): ScheduleEntity {
     const s = new ScheduleEntity();

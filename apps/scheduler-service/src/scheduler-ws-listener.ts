@@ -10,7 +10,11 @@ export class SchedulerWsListener implements OnModuleInit {
 
   constructor(private readonly wsClientService: WsClientService,
     private readonly schedulerServiceService: SchedulerServiceService
-  ) { }
+  ) {
+    this.handleCreateTask = this.handleCreateTask.bind(this);
+    this.handleUpdateTask = this.handleUpdateTask.bind(this);
+    this.handleDeleteTask = this.handleDeleteTask.bind(this);
+  }
 
   onModuleInit() {
     this.wsClientService.subscribe(TaskEvents.UPDATED, this.handleUpdateTask)
@@ -26,8 +30,8 @@ export class SchedulerWsListener implements OnModuleInit {
     console.log('Received message:', message);
   }
 
-  handleDeleteTask(@MessageBody() message: communicationInterface.ITaskMessage): void {
-    console.log('Received message:', message);
+  async handleDeleteTask(@MessageBody() message: communicationInterface.ITaskMessage): Promise<void> {
+    await this.schedulerServiceService.deleteByTaskId(message.id)
   }
 
 }

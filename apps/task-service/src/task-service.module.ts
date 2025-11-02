@@ -9,6 +9,8 @@ import { resolve } from 'path';
 import { VersioningConfigService } from './utils/config/versioning-config.service';
 import { FileSystemService } from './utils/file-system/file-system.service';
 import { SharedSocketModule } from 'lib/shared-socket';
+import { TaskWsListener } from './task-ws-listener';
+import { TaskTaskKafkaListener } from './task-kafka-listener';
 
 
 @Module({
@@ -22,6 +24,6 @@ import { SharedSocketModule } from 'lib/shared-socket';
     SharedSocketModule.forRoot({ mode: 'server' }),
   ],
   controllers: [TaskServiceController],
-  providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService, FileSystemService],
+  providers: [TaskServiceService, TaskRepositoryProvider, VersioningConfigService, FileSystemService , TaskWsListener , TaskTaskKafkaListener],
 })
 export class TaskServiceModule { }
