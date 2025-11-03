@@ -17,10 +17,10 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
       isGlobal: true,
       envFilePath: resolve(process.cwd(), "apps", "scheduler-service", '.env')
     }),
-     MyTypeOrmModule,
+    MyTypeOrmModule,
     PrismaModule,
     SharedSocketModule.forRoot({ mode: "client", serverUrl: "http://localhost:4000" })],
   controllers: [SchedulerServiceController],
-  providers: [SchedulerServiceService, SchedulerWsListener, SchedulerRepositoryProvider,SchedulerKafkaListener, VersioningConfigService]
+  providers: [SchedulerServiceService, SchedulerWsListener, SchedulerRepositoryProvider, SchedulerKafkaListener, VersioningConfigService]
 })
 export class SchedulerServiceModule { }
