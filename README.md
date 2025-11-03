@@ -42,6 +42,9 @@ $ yarn run start:dev
 
 # production mode
 $ yarn run start:prod
+
+# run both apps
+$ start:all
 ```
 
 ## Run tests
@@ -55,6 +58,9 @@ $ yarn run test:e2e
 
 # test coverage
 $ yarn run test:cov
+
+# run all test
+$ yarn test:watch
 ```
 
 ## Deployment
