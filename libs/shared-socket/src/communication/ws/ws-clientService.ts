@@ -12,7 +12,7 @@ export class WsClientService implements CommunicationStrategy, OnModuleInit, OnM
   async onModuleInit() {
     setTimeout(async () => {
       await this.connect();
-    }, 10000)
+    }, 1500)
   }
 
   private async connect(): Promise<void> {
@@ -20,6 +20,7 @@ export class WsClientService implements CommunicationStrategy, OnModuleInit, OnM
       this.socket = io(this.serverUrl, { transports: ['websocket', 'polling'] });
       this.socket.on('connect', () => {
         this.isConnected = true;
+        console.log("sock connected")
         resolve();
       });
       this.socket.on('disconnect', () => {

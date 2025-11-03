@@ -1,17 +1,16 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import * as scheduleInterface from './interfaces/schedule.interface';
-import * as communicationInterface from 'lib/shared-socket/communication/communication.interface';
 import { CreateScheduleDto } from './dto/create.schedule.entity';
 import { ScheduleEntity, ScheduleStatus } from './entity/schedule.entity';
 import { UpdateScheduleDto } from './dto/update.schedule.entity';
 import { TaskEvents } from 'lib/shared-socket';
+import { WsClientService } from 'lib/shared-socket/communication/ws/ws-clientService';
 
 @Injectable()
 export class SchedulerServiceService {
   constructor(@Inject('IScheduleRepository')
   private readonly scheduleRepository: scheduleInterface.IScheduleRepo,
-    @Inject('CommunicationStrategy')
-    private readonly comm: communicationInterface.CommunicationStrategy,
+    private readonly wsClientService: WsClientService,
   ) { }
 
   async create(createSchedule: CreateScheduleDto): Promise<ScheduleEntity> {
@@ -35,7 +34,7 @@ export class SchedulerServiceService {
       throw new NotFoundException("ScheduleEntity not found")
     }
     const updated = await this.scheduleRepository.update(id, updateScheduleDto)
-    this.comm.publish(TaskEvents.SCHEDULE_UPDATE, { id: updated.taskId, status: this.getStatus(updated) })
+    this.wsClientService.publish(TaskEvents.SCHEDULE_UPDATE, { id: updated.taskId, status: this.getStatus(updated) })
     return updated
   }
 

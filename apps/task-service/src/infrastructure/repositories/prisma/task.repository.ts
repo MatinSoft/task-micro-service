@@ -69,7 +69,8 @@ export class PrismaTaskRepository implements ITaskRepository {
       where: { id },
       data: {
         title: taskDto.title,
-        description: taskDto.description
+        description: taskDto.description,
+        status: taskDto.status
       },
       include: {
         attachments: true
