@@ -25,7 +25,7 @@ export class TaskServiceService {
 
   async createV2(): Promise<string> {
     this.comm.publish(TaskEvents.CREATED, { id: "v2Id", title: "V2 Ttile" })
-    return "Task version 2 Created"
+    return await "Task version 2 Created"
   }
 
   async getTaskById(id: string): Promise<TaskEntity> {

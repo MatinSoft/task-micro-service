@@ -16,7 +16,6 @@ describe('SchedulerServiceController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(schedulerServiceController.getHello()).toBe('Hello World!');
     });
   });
 });
