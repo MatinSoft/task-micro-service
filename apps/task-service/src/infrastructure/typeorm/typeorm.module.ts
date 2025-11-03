@@ -8,7 +8,7 @@ import { AttachmentEntity } from '../../entity/attachment.entity';
   imports: [
     ConfigModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule], 
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
@@ -17,12 +17,12 @@ import { AttachmentEntity } from '../../entity/attachment.entity';
         username: config.get('DATABASE_USER'),
         password: config.get('DATABASE_PASSWORD'),
         database: config.get('DATABASE_NAME'),
-        entities: [TaskEntity , AttachmentEntity],
-        synchronize: true,
+        entities: config.get<string>('ORM') == "typeorm" ? [TaskEntity, AttachmentEntity] : [],
+        synchronize: config.get<string>('ORM') == "typeorm" ? true : false,
       }),
     }),
-    TypeOrmModule.forFeature([TaskEntity , AttachmentEntity]),
+    TypeOrmModule.forFeature([TaskEntity, AttachmentEntity]),
   ],
   exports: [TypeOrmModule],
 })
-export class MyTypeOrmModule {}
+export class MyTypeOrmModule { }

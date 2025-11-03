@@ -54,7 +54,6 @@ export class ScheduleEntity {
     @Column({
         type: "enum",
         enum: ScheduleStatus,
-        name:"ScheduleStatus",
         default: ScheduleStatus.SCHEDULED,
     })
     status: ScheduleStatus;

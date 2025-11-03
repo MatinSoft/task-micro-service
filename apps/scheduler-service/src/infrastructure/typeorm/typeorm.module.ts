@@ -8,7 +8,7 @@ import { ScheduleEntity } from '../../entity/schedule.entity';
   imports: [
     ConfigModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule], 
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
@@ -17,12 +17,12 @@ import { ScheduleEntity } from '../../entity/schedule.entity';
         username: config.get('DATABASE_USER'),
         password: config.get('DATABASE_PASSWORD'),
         database: config.get('DATABASE_NAME'),
-        entities: [ScheduleEntity],
-        synchronize: true,
+        entities: config.get<string>('ORM') == "typeorm" ? [ScheduleEntity] : [],
+        synchronize: config.get<string>('ORM') == "typeorm" ? true : false,
       }),
     }),
     TypeOrmModule.forFeature([ScheduleEntity]),
   ],
   exports: [TypeOrmModule],
 })
-export class MyTypeOrmModule {}
+export class MyTypeOrmModule { }

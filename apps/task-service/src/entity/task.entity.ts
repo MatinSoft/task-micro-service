@@ -19,7 +19,7 @@ export class TaskEntity {
     @IsUUID()
     id: string
 
-    @Column()
+    @Column({ nullable: false })
     @ApiProperty({
         type: String,
         required: true

@@ -46,7 +46,7 @@ export class SchedulePrismaRepo implements IScheduleRepo {
     } catch (error) {
       console.log(error)
       throw new Error("");
-      
+
     }
   }
 
@@ -61,7 +61,9 @@ export class SchedulePrismaRepo implements IScheduleRepo {
   async update(id: string, taskDto: UpdateScheduleDto): Promise<ScheduleEntity> {
     const prismaSchedule = await this.prisma.schedule.update({
       where: { id },
-      data: { status: { set: taskDto.status } }
+      data: {
+        status: taskDto.status
+      }
     });
     return this.toEntity(prismaSchedule);
   }
