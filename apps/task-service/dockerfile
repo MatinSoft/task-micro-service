@@ -8,15 +8,17 @@ WORKDIR /usr/src/app
 # Copy package files
 COPY package*.json ./
 
+COPY libs ./libs
+
 # Install all deps for build
-RUN npm ci
+RUN yarn 
 
 # Copy source code and envs
 COPY . .
-
 # Copy prisma env
-COPY ./src/infrastructure/prisma/.env ./src/infrastructure/prisma/.env
+COPY apps/task-service/src/infrastructure/prisma/.env ./src/infrastructure/prisma/.env
 
+COPY tsconfig.json nest-cli.json ./
 # Build NestJS app
 RUN npm run build
 
@@ -36,7 +38,7 @@ COPY --from=builder /usr/src/app/src/infrastructure/prisma/.env ./src/infrastruc
 RUN npm ci --omit=dev
 
 # Copy root env for runtime
-COPY .env .env
+COPY apps/task-service/.env .env
 
 # Expose app port
 EXPOSE ${PORT}

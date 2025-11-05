@@ -8,12 +8,14 @@ WORKDIR /usr/src/app
 # Copy package files
 COPY package*.json ./
 
+COPY libs ./libs
+
 # Install all dependencies for build
-RUN npm ci
+RUN RUN yarn 
 
 # Copy source code and environment files
 COPY . .
-
+COPY tsconfig.json nest-cli.json ./
 # Copy Prisma or infrastructure-level .env
 COPY ./src/infrastructure/prisma/.env ./src/infrastructure/prisma/.env
 

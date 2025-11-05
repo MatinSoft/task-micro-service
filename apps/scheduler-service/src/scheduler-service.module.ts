@@ -19,7 +19,8 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
     }),
     MyTypeOrmModule,
     PrismaModule,
-    SharedSocketModule.forRoot({ mode: "client", serverUrl: "http://localhost:4000" })],
+    SharedSocketModule.forRoot({ mode: "client", serverUrl: process.env.WS_server || "http://localhost:4000" })
+  ],
   controllers: [SchedulerServiceController],
   providers: [SchedulerServiceService, SchedulerWsListener, SchedulerRepositoryProvider, SchedulerKafkaListener, VersioningConfigService]
 })
