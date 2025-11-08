@@ -36,6 +36,7 @@ ENV DATABASE_NAME_SCHEDULE=${DATABASE_NAME_SCHEDULE}
 # Generate Prisma client (ensure correct binary for Alpine)
 RUN npx prisma generate --schema=apps/scheduler-service/src/infrastructure/prisma/schema.prisma
 
+RUN ls -R /usr/src/app/apps/scheduler-service/src/infrastructure
 # Build the NestJS app
 RUN npx nest build scheduler-service
 
