@@ -16,7 +16,7 @@ import { AttachmentEntity } from '../../entity/attachment.entity';
         port: config.get<number>('DATABASE_PORT', 5432),
         username: config.get('DATABASE_USER'),
         password: config.get('DATABASE_PASSWORD'),
-        database: config.get('DATABASE_NAME'),
+        database: config.get('DATABASE_NAME_TASK'),
         entities: config.get<string>('ORM') == "typeorm" ? [TaskEntity, AttachmentEntity] : [],
         synchronize: config.get<string>('ORM') == "typeorm" ? true : false,
       }),

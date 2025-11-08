@@ -11,6 +11,6 @@ async function bootstrap() {
   setupGlobalPipes(app)
   app.setGlobalPrefix('api');
   swaggerInitialize(app)
-  await app.listen(process.env.Port ?? 3000);
+  await app.listen(process.env.Port_SCHEDULE ?? 3000);
 }
 bootstrap();

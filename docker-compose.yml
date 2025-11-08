@@ -10,12 +10,21 @@ services:
       dockerfile: ./apps/task-service/dockerfile
     container_name: task-service
     ports:
-      - "${PORT:-4000}:4000"
-    env_file:
+      - "${TASK_SERVICE_PORT:-4000}:4000"
+    environment:
       # Merge envs in priority order (shared first, service last)
-      - ./libs/shared-socket/.env
-      - ./apps/task-service/.env
-      - ./apps/task-service/src/infrastructure/prisma/.env
+      COMM_MODE: ${COMM_MODE}
+      KAFKA_GROUP_ID : ${KAFKA_GROUP_ID}
+      KAFKA_BROKERS : ${KAFKA_BROKERS}
+      Port_TASK : ${Port_TASK}
+      DATABASE_PORT : ${DATABASE_PORT}
+      DATABASE_USER : ${DATABASE_USER}
+      DATABASE_PASSWORD : ${DATABASE_PASSWORD}
+      DATABASE_NAME_TASK : ${DATABASE_NAME_TASK}
+      ORM : ${ORM}
+      DATABASE_HOST : ${DATABASE_HOST}
+      DATABASE_URL_TASK : ${DATABASE_URL_TASK}
+    
     volumes:
       - ./apps/task-service/uploads:/usr/src/app/uploads
     depends_on:
@@ -34,11 +43,21 @@ services:
       dockerfile: ./apps/scheduler-service/dockerfile
     container_name: scheduler-service
     ports:
-      - "${PORT:-4001}:3000"
-    env_file:
-      - ./libs/shared-socket/.env
-      - ./apps/scheduler-service/.env
-      - ./apps/scheduler-service/src/infrastructure/prisma/.env
+      - "${Port_SCHEDULE:-3000}:3000"
+    environment:
+      # Merge envs in priority order (shared first, service last)
+      COMM_MODE: ${COMM_MODE}
+      KAFKA_GROUP_ID : ${KAFKA_GROUP_ID}
+      KAFKA_BROKERS : ${KAFKA_BROKERS}
+      Port_SCHEDULE : ${Port_SCHEDULE}
+      DATABASE_PORT : ${DATABASE_PORT}
+      DATABASE_USER : ${DATABASE_USER}
+      DATABASE_PASSWORD : ${DATABASE_PASSWORD}
+      DATABASE_NAME_SCHEDULE : ${DATABASE_NAME_SCHEDULE}
+      ORM : ${ORM}
+      DATABASE_HOST : ${DATABASE_HOST}
+      DATABASE_URL_SCHEDULE : ${DATABASE_URL_SCHEDULE}
+    
     depends_on:
       - task-service
       - kafka
@@ -65,6 +84,7 @@ services:
   #  Kafka
   # ============================
   kafka:
+    container_name : Kafka-1
     image: wurstmeister/kafka:latest
     environment:
       # Listener configuration

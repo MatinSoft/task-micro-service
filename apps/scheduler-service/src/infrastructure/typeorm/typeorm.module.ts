@@ -16,7 +16,7 @@ import { ScheduleEntity } from '../../entity/schedule.entity';
         port: config.get<number>('DATABASE_PORT', 5432),
         username: config.get('DATABASE_USER'),
         password: config.get('DATABASE_PASSWORD'),
-        database: config.get('DATABASE_NAME'),
+        database: config.get('DATABASE_NAME_SCHEDULE'),
         entities: config.get<string>('ORM') == "typeorm" ? [ScheduleEntity] : [],
         synchronize: config.get<string>('ORM') == "typeorm" ? true : false,
       }),
