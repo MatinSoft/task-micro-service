@@ -16,16 +16,15 @@ RUN apk add --no-cache openssl
 # Copy package files
 COPY package*.json ./
 
-# Copy shared libraries and Prisma schema
-COPY libs ./libs
-COPY apps/scheduler-service/src/infrastructure/prisma ./prisma
-
-# Install dependencies (including dev)
-RUN npm install
-
-# Copy all remaining source code and workspace configs
+# 📌 REVISED: Copy all source files and workspace configs early.
+# This ensures the Prisma schema is in its correct monorepo path
+# before 'npm install' and 'prisma generate'.
 COPY . .
 COPY tsconfig.json nest-cli.json ./
+
+# Install dependencies (including dev)
+# This will install all dependencies and create the 'node_modules' folder.
+RUN npm install
 
 # Set environment variables for database configuration
 ENV DATABASE_URL_SCHEDULE=${DATABASE_URL_SCHEDULE}
@@ -33,10 +32,9 @@ ENV DATABASE_USER=${DATABASE_USER}
 ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
 ENV DATABASE_NAME_SCHEDULE=${DATABASE_NAME_SCHEDULE}
 
-# Generate Prisma client (ensure correct binary for Alpine)
+# Generate Prisma client
 RUN npx prisma generate --schema=apps/scheduler-service/src/infrastructure/prisma/schema.prisma
 
-RUN ls -R /usr/src/app/apps/scheduler-service/src/infrastructure
 # Build the NestJS app
 RUN npx nest build scheduler-service
 
@@ -53,17 +51,15 @@ RUN apk add --no-cache openssl
 # Copy package files from builder
 COPY --from=builder /usr/src/app/package*.json ./
 
-# Install  dependencies
-RUN npm install 
+# Install only production dependencies
+RUN npm install
 
 # Copy built files and assets
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/libs ./libs
 
 # Copy generated Prisma client and engines
-# Make sure the folder name matches the one in your schema.prisma
-
-COPY --from=builder /usr/src/app/apps/scheduler-service/src/infrastructure/generated/scheduler-service ./apps/scheduler-service/src/infrastructure/generated/scheduler-service
+COPY --from=builder /usr/src/app/apps/scheduler-service/src/infrastructure ./apps/scheduler-service/src/infrastructure
 COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /usr/src/app/node_modules/@prisma ./node_modules/@prisma
 

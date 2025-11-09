@@ -57,6 +57,7 @@ services:
       ORM : ${ORM}
       DATABASE_HOST : ${DATABASE_HOST}
       DATABASE_URL_SCHEDULE : ${DATABASE_URL_SCHEDULE}
+      WS_server : ${WS_server}
     
     depends_on:
       - task-service
