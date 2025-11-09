@@ -16,9 +16,7 @@ RUN apk add --no-cache openssl
 # Copy package files
 COPY package*.json ./
 
-# 📌 REVISED: Copy all source files and workspace configs early.
-# This ensures the Prisma schema is in its correct monorepo path
-# before 'npm install' and 'prisma generate'.
+
 COPY . .
 COPY tsconfig.json nest-cli.json ./
 
